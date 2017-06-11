@@ -16,6 +16,8 @@ app.get('/films/:id/recommendations', getFilmRecommendations);
 
 // ROUTE HANDLER
 function getFilmRecommendations(req, res) {
+
+//this should get all the films by id
   db.Films.getAll({
 
     where: {
@@ -29,19 +31,20 @@ function getFilmRecommendations(req, res) {
     fifteenYearsAfter = (releaseYear + 15);
     let recommendFilms = [];
 
+//this should get all films by genre
     db.Films.findAll({
       where: {
         genre_id: genreId
       }
     }).then(function(selectedFilms){
-      for(var i = 0, i < selectedFilms, i++){
+      for(i = 0, i < selectedFilms, i++) {
         let grabYear = parseInt(selectedFilms[i].release_date.substring(0, 4));
         if (grabYear <= fifteenYearsAfter && grabYear >= fifteenYearsBefore) {
           recommendFilms.push(selectedFilms[i]);
         }
       }
       res.json({'recommendations': recommendFilms});
-    })
+    });
   })
   res.status(500).send('Not Implemented');
 }
